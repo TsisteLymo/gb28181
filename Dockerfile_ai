@@ -50,10 +50,12 @@ RUN sed -i 's|http://archive.ubuntu.com|http://mirrors.aliyun.com|g; s|http://se
 
 # 安装运行时依赖（极简版）
 # Ubuntu 24.04 已预装 libstdc++6, libgcc-s1, libssl3t64
-# libpython3.12 是 MediaServer 内嵌 Python 3.12 解释器的核心依赖
+# python3: analysis 脚本需要解释器
+# libpython3.12: MediaServer 内嵌 Python 3.12 需要共享库（python3 包不含 .so）
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     tzdata \
+    python3 \
     libpython3.12 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
