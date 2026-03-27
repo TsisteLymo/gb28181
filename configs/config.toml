@@ -40,7 +40,7 @@
     # 磁盘使用率阈值（百分比），超过则触发循环覆盖
     DiskUsageThreshold = 95.0
     # MP4 切片时长（秒）
-    SegmentSeconds = 300
+    SegmentSeconds = 10
 
 [Data]
   # 数据库支持 sqlite/postgres/mysql, 使用 sqlite 时 dsn 应当填写文件存储路径
@@ -83,8 +83,8 @@
   # 媒体服务器类型 zlm/lalmax
   Type = 'zlm'
   # 用于流媒体 webhook 回调
-  WebHookIP = '192.168.1.5'
+  WebHookIP = '192.168.31.10'
   # 媒体服务器 RTP 端口范围
   RTPPortRange = '20000-20100'
   # 媒体服务器 SDP IP
-  SDPIP = '192.168.1.5'
+  SDPIP = '192.168.31.10'

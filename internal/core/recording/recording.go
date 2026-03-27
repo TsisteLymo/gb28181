@@ -7,6 +7,7 @@ import (
 
 	"github.com/ixugo/goddd/pkg/orm"
 	"github.com/ixugo/goddd/pkg/reason"
+	"github.com/ixugo/goddd/pkg/web"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
@@ -45,6 +46,11 @@ func (c Core) FindRecordings(ctx context.Context, in *FindRecordingInput) ([]*Re
 	total, err := c.store.Recording().Find(ctx, &items, in, query.Encode()...)
 	if err != nil {
 		return nil, 0, reason.ErrDB.Withf(`Find in[%+v] err[%s]`, in, err.Error())
+	}
+	for _, item := range items {
+		if ctx, ok := ctx.(web.Context); ok {
+			item.Path = ctx.BaseURLJoin("/static/recordings", item.Path)
+		}
 	}
 	return items, total, nil
 }

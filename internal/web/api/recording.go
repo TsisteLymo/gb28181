@@ -67,13 +67,14 @@ func RegisterRecording(g gin.IRouter, api RecordingAPI, handler ...gin.HandlerFu
 	// Gin Static 支持 HTTP Range 请求，实现边下载边播放（秒播）
 	if api.conf != nil && api.conf.Server.Recording.StorageDir != "" {
 		slog.Info("注册录像静态文件服务", "path", "/static/recordings", "dir", api.conf.Server.Recording.StorageDir)
-		g.Static("/static/recordings", api.conf.Server.Recording.StorageDir)
+		g.Group("/static", handler...).Static("/recordings", api.conf.Server.Recording.StorageDir)
 	}
 }
 
 // findRecordings 分页查询录像列表
 func (a RecordingAPI) findRecordings(c *gin.Context, in *recording.FindRecordingInput) (any, error) {
-	items, total, err := a.recordingCore.FindRecordings(c.Request.Context(), in)
+	ctx := web.WithContext(c.Request)
+	items, total, err := a.recordingCore.FindRecordings(ctx, in)
 	return gin.H{"items": items, "total": total}, err
 }
 
@@ -150,7 +151,8 @@ func (a RecordingAPI) channelPlaylist(c *gin.Context) {
 	}
 
 	// 获取时间范围内的录像列表（需要完整路径信息）
-	recordings, _, err := a.recordingCore.FindRecordings(c.Request.Context(), &recording.FindRecordingInput{
+	ctx := web.WithContext(c.Request)
+	recordings, _, err := a.recordingCore.FindRecordings(ctx, &recording.FindRecordingInput{
 		CID:         cid,
 		PagerFilter: web.PagerFilter{Page: 1, Size: 10000},
 		DateFilter:  web.DateFilter{StartMs: startMs, EndMs: endMs},

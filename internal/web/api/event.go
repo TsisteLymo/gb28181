@@ -51,12 +51,14 @@ func RegisterEvent(g gin.IRouter, api EventAPI, handler ...gin.HandlerFunc) {
 		group.DELETE("/:id", web.WrapH(api.delEvent))
 	}
 	// 图片接口不需要认证中间件
+	// TODO: 待添加鉴权
 	g.GET("/events/image/*path", api.getEventImage)
 }
 
 // findEvents 分页查询事件列表
 func (a EventAPI) findEvents(c *gin.Context, in *event.FindEventInput) (any, error) {
-	items, total, err := a.eventCore.FindEvents(c.Request.Context(), in)
+	ctx := web.WithContext(c.Request)
+	items, total, err := a.eventCore.FindEvents(ctx, in)
 	return gin.H{"items": items, "total": total}, err
 }
 

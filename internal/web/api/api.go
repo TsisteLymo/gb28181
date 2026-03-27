@@ -120,10 +120,8 @@ func setupRouter(r *gin.Engine, uc *Usecase) {
 	registerAIWebhookAPI(r, uc.AIWebhookAPI)
 	// 启动 AI 任务同步协程，每 5 分钟检测一次数据库与内存状态差异
 	uc.AIWebhookAPI.StartAISyncLoop(context.Background(), uc.SMSAPI.smsCore)
-	// TODO: 待补充中间件
-	RegisterEvent(r, uc.EventAPI)
-	// TODO: 待补充中间件
-	RegisterRecording(r, uc.RecordingAPI)
+	RegisterEvent(r, uc.EventAPI, auth)
+	RegisterRecording(r, uc.RecordingAPI, auth)
 }
 
 type playOutput struct {

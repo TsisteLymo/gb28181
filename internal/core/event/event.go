@@ -7,6 +7,7 @@ import (
 
 	"github.com/ixugo/goddd/pkg/orm"
 	"github.com/ixugo/goddd/pkg/reason"
+	"github.com/ixugo/goddd/pkg/web"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 )
@@ -45,6 +46,11 @@ func (c Core) FindEvents(ctx context.Context, in *FindEventInput) ([]*Event, int
 	total, err := c.store.Event().Find(ctx, &items, in, query.Encode()...)
 	if err != nil {
 		return nil, 0, reason.ErrDB.Withf(`Find in[%+v] err[%s]`, in, err.Error())
+	}
+	for _, item := range items {
+		if ctx, ok := ctx.(web.Context); ok {
+			item.ImagePath = ctx.BaseURLJoin("/events/image/", item.ImagePath)
+		}
 	}
 	return items, total, nil
 }
