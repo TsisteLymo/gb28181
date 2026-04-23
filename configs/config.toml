@@ -32,7 +32,7 @@
   # 录像配置
   [Server.Recording]
     # 是否禁用录制（全局开关，true=禁用）
-    Disabled = false
+    Disabled = true
     # 录像存储根目录（相对于工作目录）
     StorageDir = './configs/recordings'
     # 录像保留天数（超过则清理）
@@ -67,24 +67,24 @@
   # 服务监听的 tcp/udp 端口号
   Port = 15060
   # gb/t28181 20 位国标 ID
-  ID = '34030000002000000003'
+  ID = '53310000002000000001'
   # 域
-  Domain = '3403000000'
+  Domain = '5331000000'
   # 注册密码
   Password = ''
 
 [Media]
   # 媒体服务器 IP
-  IP = '127.0.0.1'
+  IP = '192.168.1.6'
   # 媒体服务器 HTTP 端口
   HTTPPort = 8080
   # 媒体服务器密钥
-  Secret = 'jvRqCAzEg7AszBi4gm1cfhwXpmnVmJMG'
+  Secret = 'SW7E5BlDHZc8ymkz1LrKRavJzLwXQNIZ'
   # 媒体服务器类型 zlm/lalmax
   Type = 'zlm'
   # 用于流媒体 webhook 回调
-  WebHookIP = '192.168.31.10'
+  WebHookIP = 'host.docker.internal'
   # 媒体服务器 RTP 端口范围
   RTPPortRange = '20000-20100'
   # 媒体服务器 SDP IP
-  SDPIP = '192.168.31.10'
+  SDPIP = '192.168.1.6'
